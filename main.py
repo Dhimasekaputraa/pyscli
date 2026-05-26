@@ -1,9 +1,12 @@
 # CLI SHELL USING PYTHON
 
-# -- Tokenization
+# -- Tokenization (Still on going)
 def tokenization(clean_command) :
     tokens = clean_command.split()
     # print(tokens)
+
+    # Need to get the command and args from tokens.
+    # Command from tokens index 0 and args from index 1 and so on
     return tokens
 
 # -- MAIN LOOP (REPL)
@@ -16,7 +19,7 @@ while running :
     # Clean the input form white space
     clean_command = raw_command.strip()
     
-    tokenization(clean_command)
+    tokenization(clean_command) # not fully implemented yet
 
     # -- Evaluator (Needs to make it's own function)
     # Blank space condition
