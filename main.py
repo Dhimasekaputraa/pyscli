@@ -1,31 +1,25 @@
-# CLI SHELL USING PYTHON
+import sys
+import os
+import commands
+   
+def main():
+    while True:
+        try:
+            user_input = input("user@myshell:~$ ")
 
-# -- Tokenization (Still on going)
-def tokenization(clean_command) :
-    tokens = clean_command.split()
-    # print(tokens)
+            if not user_input.strip():
+                continue
 
-    # Need to get the command and args from tokens.
-    # Command from tokens index 0 and args from index 1 and so on
-    return tokens
+            token = user_input.strip().split()
+            command = token[0].lower()
+            args = token[1:]
 
-# -- MAIN LOOP (REPL)
-running = True
-while running :
-    print("user@device : $ ", end = "") #Temporary, can be upgraded to get username and userdevice info
-    # Get the user input
-    raw_command = input("")
+            cmd = commands.Command(user_input, token, command, args)
+            cmd.execute_commands()
 
-    # Clean the input form white space
-    clean_command = raw_command.strip()
-    
-    tokenization(clean_command) # not fully implemented yet
+        except (KeyboardInterrupt, EOFError):
+            print("Gunakan 'exit' untuk keluar.")
+            continue
 
-    # -- Evaluator (Needs to make it's own function)
-    # Blank space condition
-    if clean_command == "" :
-        continue
-
-    # exit condition
-    if clean_command == "exit" :
-        running = False
+if __name__ == "__main__":
+    main()
