@@ -11,15 +11,7 @@ class Command:
     def show_commands():
         print("Available commands:")
         print(" help    - Show this help message")
-        print(" cd      - Change directory")
-        print(" pwd     - Current working directory")
         print(" exit    - Exit the shell")
-
-    def change_directory(self):
-        pass
-
-    def current_directory(self):
-        pass
         
     def exit_shell():
         sys.exit(0)
@@ -28,9 +20,5 @@ class Command:
         match self.command:
             case "help":
                 Command.show_commands()
-            case "cd":
-                Command.change_directory(self)
-            case "pwd":
-                Command.current_directory(self)
             case "exit":
                 Command.exit_shell()
