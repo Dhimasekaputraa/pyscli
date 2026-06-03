@@ -1,24 +1,16 @@
-import os
-from commands import Command
-   
 def main():
     while True:
         try:
-            current_path = "" + os.path.basename(os.getcwd())
-            user_input = input(f"user@myshell | {current_path} \n  ")
+            user_input = input(f"user@myshell:~$ ").lower()
 
             if not user_input.strip():
                 continue
 
-            token = user_input.strip().split()
-            command = token[0].lower()
-            args = token[1:]
+            # Dev only : to show what's user input after the cleaning
+            # print(f"Raw input: '{user_input}'\nInput after cleaning: '{user_input.strip()}'")
 
-            # dev only : to show what's inside token and which is command or args
-            # print(f"Token : {token}\nCommand:{command}, Args:{args}")
-
-            cmd = Command(user_input, token, command, args)
-            cmd.execute_commands()
+            if user_input.strip() == "exit":
+                break
 
         except (KeyboardInterrupt, EOFError):
             print("Gunakan 'exit' untuk keluar.")
