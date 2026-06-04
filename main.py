@@ -5,6 +5,10 @@ def main():
 
             if not user_input.strip():
                 continue
+
+            ### Dev only : to show what's user input after the cleaning
+            print(f"Raw input: '{user_input}'\nInput after cleaning: '{user_input.strip()}'")
+
                 
             if user_input.strip() == "exit":
                 break
