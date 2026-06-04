@@ -14,6 +14,9 @@ def main():
             command = token[0].lower()
             args = token[1:]
 
+            ### dev only : to show what's inside token and which is command or args
+            print(f"Token : {token}\nCommand:{command}, Args:{args}")
+
             cmd = Command(user_input, token, command, args)
             cmd.execute_commands()
 
