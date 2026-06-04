@@ -5,7 +5,7 @@ def main():
     while True:
         try:
             current_path = "" + os.path.basename(os.getcwd())
-            user_input = input(f"user@myshell | {current_path} \n  ")
+            user_input = input(f"user@myshell | {current_path}$ ")
 
             if not user_input.strip():
                 continue
