@@ -1,7 +1,8 @@
+import os
 def main():
     while True:
         try:
-            user_input = input(f"user@myshell$ ").lower()
+            user_input = input(f"user@myshell {os.path.basename(os.getcwd())}$ ").lower()
 
             if not user_input.strip():
                 continue
