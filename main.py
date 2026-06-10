@@ -4,8 +4,7 @@ from commands import Command
 def main():
     while True:
         try:
-            current_path = "user@myshell:~$ " + os.path.basename(os.getcwd())
-            user_input = input(f"{current_path} ")
+            user_input = input(Command.get_prompt())
 
             if not user_input.strip():
                 continue
