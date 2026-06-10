@@ -1,9 +1,11 @@
-import commands
+import os
+from commands import Command
    
 def main():
     while True:
         try:
-            user_input = input("user@myshell:~$ ")
+            current_path = "user@myshell:~$ " + os.path.basename(os.getcwd())
+            user_input = input(f"{current_path} ")
 
             if not user_input.strip():
                 continue
@@ -12,7 +14,7 @@ def main():
             command = token[0].lower()
             args = token[1:]
 
-            cmd = commands.Command(user_input, token, command, args)
+            cmd = Command(user_input, token, command, args)
             cmd.execute_commands()
 
         except (KeyboardInterrupt, EOFError):
