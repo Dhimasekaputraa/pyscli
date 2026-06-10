@@ -16,6 +16,7 @@ class Command:
         print(" help    - Show this help message")
         print(" cd      - Change directory")
         print(" pwd     - Current working directory")
+        print(" echo    - Print text to screen")
         print(" clear   - Removes visible screen")
         print(" exit    - Exit the shell")
 
@@ -72,10 +73,22 @@ class Command:
         return f"{GREEN}{user_info['user']}{RESET} | {BLUE}{user_info['host']}{RESET} : {cwd}$ "
 
     def current_directory(self):
+        if self.args:
+            print("pwd: too many arguments")
+            return
         print(os.getcwd())
 
-    @staticmethod
-    def clear_screen():
+    def print_text(self):
+        if self.args:
+            print(*self.args, "\n")
+        elif self.args == "$PWD":
+            print(f"{Command.current_directory()}, \n")
+            return
+
+    def clear_screen(self):
+        if self.args:
+            print("clear: too many arguments")
+            return
         os.system("cls" if os.name == "nt" else "clear")
 
     def exit_shell():
@@ -89,7 +102,9 @@ class Command:
                 Command.change_directory(self)
             case "pwd":
                 Command.current_directory(self)
+            case "echo":
+                Command.print_text(self)
             case "clear":
-                Command.clear_screen()
+                Command.clear_screen(self)
             case "exit":
                 Command.exit_shell()
