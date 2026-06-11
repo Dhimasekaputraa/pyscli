@@ -81,8 +81,6 @@ class Command:
     def print_text(self):
         if self.args:
             print(*self.args, "\n")
-        elif self.args == "$PWD":
-            print(f"{Command.current_directory()}, \n")
             return
 
     def clear_screen(self):
