@@ -20,11 +20,14 @@ class Command:
         try:
             os.chdir(target)
         except FileNotFoundError:
-            print(f"Bash: cd: {target}: No such file or directory")
+            print(f"cd: {target}: No such file or directory")
         except PermissionError:
-            print(f"Bash: cd: {target}: Permission denied")
+            print(f"cd: {target}: Permission denied")
 
     def current_directory(self):
+        if self.args:
+            print("pwd: too many arguments")
+            return
         print(os.getcwd())
         
     def exit_shell():
