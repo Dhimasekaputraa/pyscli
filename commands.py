@@ -79,7 +79,9 @@ class Command:
         print(os.getcwd())
 
     def print_text(self):
-        if self.args:
+        if self.args == ["$PWD"]:
+            print(os.getcwd(), "\n")
+        elif self.args:
             print(*self.args, "\n")
             return
 
