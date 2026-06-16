@@ -1,7 +1,6 @@
 import sys
 import os
-import getpass
-import socket
+from executor import Executor
 
 class Command:
     def __init__(self, user_input, token, command, args):
@@ -27,46 +26,6 @@ class Command:
         except PermissionError:
             print(f"cd: {target}: Permission denied")
     
-    @staticmethod
-    def get_user_info():
-        try :
-            username = getpass.getuser()
-        except Exception :
-            username = os.environ.get("USER") or os.environ.get("USERNAME") or "USER"
-        
-        hostname = socket.gethostname()
-
-        return {
-            "user": username,
-            "host": hostname
-        }
-    
-    @staticmethod
-    def format_path(max_depth=3):
-        cwd = os.getcwd()
-        home = os.path.expanduser("~")
-
-        if cwd.startswith(home):
-            cwd = "~" + cwd[len(home):]
-
-        parts = cwd.split("/")
-
-        if len(parts) > max_depth + 1:
-            cwd = f".../{parts[-2]}/{parts[-1]}"
-
-        return cwd
-    
-    @staticmethod
-    def get_prompt():
-        user_info = Command.get_user_info()
-        cwd = Command.format_path()
-
-        GREEN = "\033[32m"
-        BLUE = "\033[34m"
-        RESET = "\033[0m"
-
-        return f"{GREEN}{user_info['user']}{RESET} | {BLUE}{user_info['host']}{RESET} : {cwd}$ "
-
     def current_directory(self):
         if self.args:
             print("pwd: too many arguments")
@@ -81,6 +40,7 @@ class Command:
             return
 
     def exit_shell():
+        print("さようなら...")
         sys.exit(0)
 
     def execute_commands(self):
@@ -96,4 +56,6 @@ class Command:
             case "exit":
                 Command.exit_shell()
             case _:
-                print("Command not found : ", self.command)
+                Executor.execute_external(
+                    self.command, self.args
+                )
