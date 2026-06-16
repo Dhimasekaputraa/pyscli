@@ -15,6 +15,12 @@ class Command:
         print(" cd      - Change directory")
         print(" pwd     - Current working directory")
         print(" echo    - Print text to screen")
+        print(" ls      - Displays a list of contents in the current active directory.")
+        print(" mkdir   - Create new directories")
+        print(" rmdir   - Delete an empty directories")
+        print(" cp      - Copy files from one directory to another")
+        print(" mv      - Move or rename files")
+        print(" clear   - Clear visible screen in shell")
         print(" exit    - Exit the shell")
 
     def change_directory(self):
