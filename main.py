@@ -1,10 +1,11 @@
 from commands import Command
+from prompt import get_prompt
 import shlex
    
 def main():
     while True:
         try:
-            user_input = input(Command.get_prompt())
+            user_input = input(get_prompt())
 
             if not user_input.strip():
                 continue
