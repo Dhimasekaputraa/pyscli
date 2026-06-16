@@ -2,7 +2,6 @@ import sys
 import os
 import getpass
 import socket
-import platform
 
 class Command:
     def __init__(self, user_input, token, command, args):
@@ -17,7 +16,6 @@ class Command:
         print(" cd      - Change directory")
         print(" pwd     - Current working directory")
         print(" echo    - Print text to screen")
-        print(" clear   - Removes visible screen")
         print(" exit    - Exit the shell")
 
     def change_directory(self):
@@ -37,13 +35,10 @@ class Command:
             username = os.environ.get("USER") or os.environ.get("USERNAME") or "USER"
         
         hostname = socket.gethostname()
-        os_name = platform.system()
-        os_release = platform.release()
 
         return {
             "user": username,
-            "host": hostname,
-            "os": f"{os_name} {os_release}"
+            "host": hostname
         }
     
     @staticmethod
@@ -85,12 +80,6 @@ class Command:
             print(*self.args, "\n")
             return
 
-    def clear_screen(self):
-        if self.args:
-            print("clear: too many arguments")
-            return
-        os.system("cls" if os.name == "nt" else "clear")
-
     def exit_shell():
         sys.exit(0)
 
@@ -104,7 +93,7 @@ class Command:
                 Command.current_directory(self)
             case "echo":
                 Command.print_text(self)
-            case "clear":
-                Command.clear_screen(self)
             case "exit":
                 Command.exit_shell()
+            case _:
+                print("Command not found : ", self.command)
