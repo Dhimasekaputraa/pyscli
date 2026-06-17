@@ -22,10 +22,12 @@ def format_path(max_depth=3):
     if cwd.startswith(home):
         cwd = "~" + cwd[len(home):]
 
-    parts = cwd.split("/")
+    parts = cwd.split(os.sep)
 
-    if len(parts) > max_depth + 1:
-        cwd = f".../{parts[-2]}/{parts[-1]}"
+    if len(parts) > max_depth:
+        cwd = os.sep.join(
+            ["..."]+ parts[-2:]
+        )
 
     return cwd
 
