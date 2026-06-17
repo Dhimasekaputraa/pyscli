@@ -4,8 +4,7 @@ from commands import Command
 def main():
     while True:
         try:
-            current_path = "user@myshell:~$ " + os.path.basename(os.getcwd())
-            user_input = input(f"{current_path} ")
+            user_input = input(Command.get_prompt())
 
             if not user_input.strip():
                 continue
@@ -14,7 +13,7 @@ def main():
             command = token[0].lower()
             args = token[1:]
 
-            cmd = Command(user_input, token, command, args)
+            cmd = Command(command, args)
             cmd.execute_commands()
 
         except (KeyboardInterrupt, EOFError):
