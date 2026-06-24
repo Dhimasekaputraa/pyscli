@@ -1,82 +1,27 @@
 import sys
 import os
-import getpass
-import socket
-import platform
-import subprocess
+from executor import Executor
 
 class Command:
-    def __init__(self, command, args):
+    def __init__(self, user_input, token, command, args):
+        self.user_input = user_input
+        self.token = token
         self.command = command
         self.args = args
-        self.built_in_command = ["help", "exit", "cd", "pwd"]
 
-    @staticmethod
     def show_commands():
         print("Available commands:")
         print(" help    - Show this help message")
-        print(" mkdir   - Create a new directory")
         print(" cd      - Change directory")
-        print(" ls      - List directory")
         print(" pwd     - Current working directory")
         print(" echo    - Print text to screen")
-        print(" clear   - Removes visible screen")
+        print(" ls      - Displays a list of contents in the current active directory")
+        print(" mkdir   - Create new directories")
+        print(" rmdir   - Delete an empty directories")
+        print(" cp      - Copy files from one directory to another")
+        print(" mv      - Move or rename files")
+        print(" clear   - Clear visible screen in shell")
         print(" exit    - Exit the shell")
-    
-    @staticmethod
-    def get_user_info():
-        try :
-            username = getpass.getuser()
-        except Exception :
-            username = os.environ.get("USER") or os.environ.get("USERNAME") or "USER"
-        
-        hostname = socket.gethostname()
-        os_name = platform.system()
-        os_release = platform.release()
-
-        return {
-            "user": username,
-            "host": hostname,
-            "os": f"{os_name} {os_release}"
-        }
-    
-    @staticmethod
-    def format_path(max_depth=3):
-        cwd = os.getcwd()
-        home = os.path.expanduser("~")
-
-        if cwd.startswith(home):
-            cwd = "~" + cwd[len(home):]
-
-        parts = cwd.split("/")
-
-        if len(parts) > max_depth + 1:
-            cwd = f".../{parts[-2]}/{parts[-1]}"
-
-        return cwd
-    
-    @staticmethod
-    def get_prompt():
-        user_info = Command.get_user_info()
-        cwd = Command.format_path()
-
-        GREEN = "\033[32m"
-        BLUE = "\033[34m"
-        RESET = "\033[0m"
-
-        return f"{GREEN}{user_info['user']}{RESET} | {BLUE}{user_info['host']}{RESET} : {cwd}$ "
-
-
-    def external_commands(self):
-        full_command = [self.command] + self.args
-        try:
-            subprocess.run(full_command, check=True)
-        except FileNotFoundError:
-            print(f"{self.command}: command not found")
-        except subprocess.CalledProcessError:
-            print(f"{self.command}: error executing command")
-        except Exception as e:
-            print(f"Error: {e}")
 
     def change_directory(self):
         target = self.args[0] if self.args else os.path.expanduser("~")
@@ -86,24 +31,36 @@ class Command:
             print(f"cd: {target}: No such file or directory")
         except PermissionError:
             print(f"cd: {target}: Permission denied")
-
+    
     def current_directory(self):
+        if self.args:
+            print("pwd: too many arguments")
+            return
         print(os.getcwd())
-        
-    @staticmethod
+
+    def print_text(self):
+        if self.args == ["$PWD"]:
+            print(os.getcwd(), "\n")
+        elif self.args:
+            print(*self.args, "\n")
+            return
+
     def exit_shell():
         sys.exit(0)
 
     def execute_commands(self):
-        if self.command in self.built_in_command:
-            match self.command:
-                case "help":
-                    Command.show_commands()
-                case "cd":
-                    self.change_directory()
-                case "pwd":
-                    self.current_directory()
-                case "exit":
-                    Command.exit_shell()
-        else:
-            self.external_commands()
+        match self.command:
+            case "help":
+                Command.show_commands()
+            case "cd":
+                Command.change_directory(self)
+            case "pwd":
+                Command.current_directory(self)
+            case "echo":
+                Command.print_text(self)
+            case "exit":
+                Command.exit_shell()
+            case _:
+                Executor.execute_external(
+                    self.command, self.args
+                )
