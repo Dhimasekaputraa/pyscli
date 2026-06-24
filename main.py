@@ -11,18 +11,26 @@ def main():
                 continue
 
             token = shlex.split(user_input)
-            command = token[0].lower()
+            command = token[0]
             args = token[1:]
 
             cmd = Command(user_input, token, command, args)
             cmd.execute_commands()
+
+            if Command.debug == True:
+                print("\n----------------------------")
+                print(f"[Tokens]  : {cmd.token}")
+                print(f"[Command] : {cmd.command}")
+                print(f"[Args]    : {cmd.args}")
+                print("------------------------------")
         
         except ValueError as e:
             print(f"Syntax error: {e}")
 
-        except (KeyboardInterrupt, EOFError):
-            print("Gunakan 'exit' untuk keluar.")
+        except KeyboardInterrupt:
             continue
+        except EOFError:
+            Command.exit_shell()
 
 if __name__ == "__main__":
     main()
