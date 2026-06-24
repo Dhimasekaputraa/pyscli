@@ -40,4 +40,4 @@ def get_prompt():
     BLUE = "\033[34m"
     RESET = "\033[0m"
 
-    return f"{GREEN}{user_info['user']}{RESET} | {BLUE}{user_info['host']}{RESET} : {cwd}$ "
+    return f"\n{GREEN}{user_info['user']}{RESET} | {BLUE}{user_info['host']}{RESET} : {cwd}$ "
