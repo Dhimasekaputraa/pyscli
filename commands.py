@@ -3,6 +3,8 @@ import os
 from executor import Executor
 
 class Command:
+    debug = False
+
     def __init__(self, user_input, token, command, args):
         self.user_input = user_input
         self.token = token
@@ -40,10 +42,28 @@ class Command:
 
     def print_text(self):
         if self.args == ["$PWD"]:
-            print(os.getcwd(), "\n")
+            print(os.getcwd())
         elif self.args:
-            print(*self.args, "\n")
+            print(*self.args)
             return
+    
+    def check_ver(self):
+        if self.args == ["--version"] or self.args == ["--v"]:
+            print(f"Pyscli 0.5.0 created by Ade Azhar, Adri Lorenzo, Dhimas Eka, Nugraha Bagya")
+        else:
+            print("pyscli: use --version or --v to check shell version")
+    
+    def debug_mode(self):
+        if self.args == ["--enable"]:
+            print(f"[SYSTEM] : entering debug mode...")
+            Command.debug = True
+           
+        elif self.args == ["--disable"]:
+            print(f"[SYSTEM] : leaving debug mode...")
+            Command.debug = False
+        
+        else:
+            print("debug: please use --enable or --disable")
 
     def exit_shell():
         print("さようなら...")
@@ -59,6 +79,10 @@ class Command:
                 Command.current_directory(self)
             case "echo":
                 Command.print_text(self)
+            case "pyscli":
+                Command.check_ver(self)
+            case "debug":
+                Command.debug_mode(self)
             case "exit":
                 Command.exit_shell()
             case _:
