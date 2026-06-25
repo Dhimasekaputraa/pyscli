@@ -6,7 +6,7 @@ class Executor:
     @staticmethod
     def _execute_windows(command, args):
         try:
-            subprocess.run([command] + args, check=True)
+            subprocess.run([command] + args, shell=True)
         except Exception as e:
             print(f"error: {e}")
 
