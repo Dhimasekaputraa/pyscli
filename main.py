@@ -1,7 +1,5 @@
-from commands import Command
-from prompt import get_prompt
-import shlex
-   
+from prompt import get_prompt, parse_and_execute
+
 def main():
     while True:
         try:
@@ -9,19 +7,14 @@ def main():
 
             if not user_input.strip():
                 continue
-
-            token = shlex.split(user_input)
-            command = token[0].lower()
-            args = token[1:]
-
-            cmd = Command(user_input, token, command, args)
-            cmd.execute_commands()
+            
+            parse_and_execute(user_input)
         
         except ValueError as e:
             print(f"Syntax error: {e}")
 
         except (KeyboardInterrupt, EOFError):
-            print("Gunakan 'exit' untuk keluar.")
+            print("\nGunakan 'exit' untuk keluar.")
             continue
 
 if __name__ == "__main__":
