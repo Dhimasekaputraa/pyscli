@@ -64,7 +64,7 @@ class Executor:
             subprocess.run([command] + args,
                         stdin=stdin_file,
                         stdout=stdout_file,
-                        check=True)
+                        shell=True)
             
           except Exception as e:
               print(e)
