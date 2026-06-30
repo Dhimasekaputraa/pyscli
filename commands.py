@@ -81,8 +81,6 @@ class Command:
                 Command.print_text(self)
             case "pyscli":
                 Command.check_ver(self)
-            case "debug":
-                Command.debug_mode(self)
             case "exit":
                 Command.exit_shell()
             case _:
