@@ -11,19 +11,31 @@ class Command:
         self.command = command
         self.args = args
 
-    def show_commands():
-        print("Available commands:")
-        print(" help    - Show this help message")
-        print(" cd      - Change directory")
-        print(" pwd     - Current working directory")
-        print(" echo    - Print text to screen")
-        print(" ls      - Displays a list of contents in the current active directory")
-        print(" mkdir   - Create new directories")
-        print(" rmdir   - Delete an empty directories")
-        print(" cp      - Copy files from one directory to another")
-        print(" mv      - Move or rename files")
-        print(" clear   - Clear visible screen in shell")
-        print(" exit    - Exit the shell")
+    def show_commands(self):
+        if len(self.args) > 1:
+            print("help: too many arguments")
+        if not self.args:
+            print("Available commands:")
+            print(" help        - Show this help message")
+            print(" cd          - Change directory")
+            print(" pwd         - Current working directory")
+            print(" echo        - Print text to screen")
+            print(" ls | dir    - Displays a list of contents in the current active directory")
+            print(" mkdir       - Create new directories")
+            print(" rmdir       - Delete an empty directories")
+            print(" cp | copy   - Copy files from one directory to another")
+            print(" mv | move   - Move or rename files")
+            print(" exit        - Exit the shell")
+        elif self.args == ["--external"]:
+            print("External commands:")
+            print(" touch           - Create a file")
+            print(" rm | del        - Remove file")
+            print(" clear | cls     - Clear visible screen in shell")
+            print(" cat | type      - Read a file")
+            print(" grep | findstr  - Search specific text pattern")
+            print(" sort            - Sort a string to ascending")
+        else:
+            print("help: only write help or help --external")
 
     def change_directory(self):
         target = self.args[0] if self.args else os.path.expanduser("~")
@@ -72,7 +84,7 @@ class Command:
     def execute_commands(self):
         match self.command:
             case "help":
-                Command.show_commands()
+                Command.show_commands(self)
             case "cd":
                 Command.change_directory(self)
             case "pwd":
