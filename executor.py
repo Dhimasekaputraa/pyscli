@@ -39,7 +39,7 @@ class Executor:
         if os.name == "nt":
             try:
                 with open(filename, "w") as f:
-                    subprocess.run([command] + args, stdout=f, check=True)
+                    subprocess.run([command] + args, stdout=f, shell=True)
             except Exception as e:
                 print(f"Redirection error: {e}")
         else:
@@ -60,7 +60,7 @@ class Executor:
         if os.name == "nt":
             try:
                 with open(filename, "r") as f:
-                    subprocess.run([command] + args, stdin=f, check=True)
+                    subprocess.run([command] + args, stdin=f, shell=True)
             except Exception as e:
                 print(f"Input Redirection error: {e}")
         else:
