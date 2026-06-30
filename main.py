@@ -1,6 +1,5 @@
 from commands import Command
-from prompt import get_prompt
-import shlex
+from prompt import get_prompt, parse_and_execute
    
 def main():
     while True:
@@ -10,20 +9,8 @@ def main():
             if not user_input.strip():
                 continue
 
-            token = shlex.split(user_input)
-            command = token[0]
-            args = token[1:]
-
-            cmd = Command(user_input, token, command, args)
-            cmd.execute_commands()
-
-            if Command.debug == True:
-                print("\n----------------------------")
-                print(f"[Tokens]  : {cmd.token}")
-                print(f"[Command] : {cmd.command}")
-                print(f"[Args]    : {cmd.args}")
-                print("------------------------------")
-        
+            parse_and_execute(user_input)
+            
         except ValueError as e:
             print(f"Syntax error: {e}")
 
