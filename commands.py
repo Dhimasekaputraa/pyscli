@@ -42,13 +42,13 @@ class Command:
         try:
             os.chdir(target)
         except FileNotFoundError:
-            print(f"cd: {target}: No such file or directory")
+            print(f"{config.RED}cd: {target}: No such file or directory")
         except PermissionError:
-            print(f"cd: {target}: Permission denied")
+            print(f"{config.RED}cd: {target}: Permission denied")
     
     def current_directory(self):
         if self.args:
-            print("pwd: too many arguments")
+            print(f"{config.RED}pwd: too many arguments")
             return
         print(os.getcwd())
 
@@ -62,13 +62,13 @@ class Command:
             print(f"[SYSTEM] : leaving debug mode...")
         
         else:
-            print("debug: add --enable or --disable")
+            print(f"{config.RED}debug: add --enable or --disable")
     
     def check_ver(self):
         if self.args == ["--version"] or self.args == ["--v"]:
-            print(f"Pyscli 0.6.0 created by Ade Azhar, Adri Lorenzo, Dhimas Eka, Nugraha Bagya")
+            print(f"{config.SHELLNAME} {config.VERSION} created by Ade Azhar, Adri Lorenzo, Dhimas Eka, Nugraha Bagya")
         else:
-            print("pyscli: add --version or --v to check shell version")
+            print(f"{config.RED}pyscli: add --version or --v to check shell version")
 
     def exit_shell():
         print("さようなら...")

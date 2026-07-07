@@ -40,11 +40,7 @@ def get_prompt():
     user_info = get_user_info()
     cwd = format_path()
 
-    GREEN = "\033[32m"
-    BLUE = "\033[34m"
-    RESET = "\033[0m"
-
-    return f"\n{GREEN}{user_info['user']}{RESET} | {BLUE}{user_info['host']}{RESET} : {cwd}$ "
+    return f"\n{config.GREEN}{user_info['user']}{config.RESET} | {config.BLUE}{user_info['host']}{config.RESET} : {cwd}$ "
 
 def parse_and_execute(user_input):
 

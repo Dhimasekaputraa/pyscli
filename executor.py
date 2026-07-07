@@ -11,18 +11,18 @@ class Executor:
                 shell=True 
             )
         except FileNotFoundError:
-            print(f"{command}: not found")
+            print(f"{config.RED}{command}: not found")
         except subprocess.CalledProcessError:
-            print(f"error executing command")
+            print(f"{config.RED}error executing command")
         except Exception as e:
-            print(f"error: {e}")
+            print(f"{config.RED}error: {e}")
 
     @staticmethod
     def _execute_posix(command, args):
         try:
             pid = os.fork()
         except OSError as e:
-            print(f"fork failed: {e}")
+            print(f"{config.RED}fork failed: {e}")
             return
         
         if pid == 0:
@@ -31,9 +31,9 @@ class Executor:
                     command, [command] + args
                 )
             except FileNotFoundError:
-                print(f"{command}: command not Found")
+                print(f"{config.RED}{command}: command not Found")
             except Exception as e:
-                print(f"execution error: {e}")
+                print(f"{config.RED}execution error: {e}")
             os._exit(1)
 
         else:
@@ -114,13 +114,13 @@ class Executor:
                     try:
                         os.execvp(command, [command]+args)
                     except Exception as e:
-                        print(e)
+                        print(f"{config.RED}{e}")
                         os._exit(1)
 
                 else:
                     os.waitpid(pid, 0)
             except Exception as e:
-                print(f"Redirection error: {e}")
+                print(f"{config.RED}Redirection error: {e}")
     
     @staticmethod
     def execute_pipeline(commands, stdin=None, stdout=None, append=False):
@@ -172,7 +172,7 @@ class Executor:
                     try:
                         os.execvp(command, [command] + args)
                     except Exception as e:
-                        print(e)
+                        print(f"{config.RED}e")
                         os._exit(1)
         
                 else:
