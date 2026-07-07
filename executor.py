@@ -1,5 +1,6 @@
 import os
 import subprocess
+import config
 
 class Executor:
     @staticmethod
@@ -40,6 +41,12 @@ class Executor:
 
     @staticmethod
     def execute_external(command, args):
+        if config.DEBUG == True:
+            print("\n=== [ External Command ] ===")
+            print(f"Command  : {command}")
+            print(f"Args     : {args}")
+            print("----------------------------\n")
+
         if os.name == "nt":
             Executor._execute_windows(
                 command, args
@@ -48,9 +55,17 @@ class Executor:
             Executor._execute_posix(
                 command, args
             )
-    
+
     @staticmethod
     def execute_redirection(command, args, stdin=None, stdout=None, append=False):
+        if config.DEBUG == True:
+            print("\n=== [ Redirection ] ===")
+            print(f"Command  : {command}")
+            print(f"Args     : {args}")
+            print(f"Stdin    : {stdin}")
+            print(f"Stdout   : {stdout}")
+            print(f"Append   : {append}")
+            print("-----------------------\n")
         if os.name == "nt":
           stdin_file = None
           stdout_file = None
@@ -109,6 +124,15 @@ class Executor:
     
     @staticmethod
     def execute_pipeline(commands, stdin=None, stdout=None, append=False):
+        if config.DEBUG == True:
+            print("\n=== [ PIPELINE ] ===")
+            for i, (cmd, args) in enumerate(commands, start=1):
+                print(f"[{i}] Cmd\t: {cmd}")
+                print(f"    Args: {args}")
+            print(f"Stdin\t: {stdin}")
+            print(f"Stdout\t: {stdout}")
+            print(f"Append\t: {append}")
+            print("-----------------------\n")
         if os.name == "nt":
             stdin_file = None
             stdout_file = None

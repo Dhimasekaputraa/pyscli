@@ -1,9 +1,9 @@
 import sys
 import os
+import config
 from executor import Executor
 
 class Command:
-    debug = False
 
     def __init__(self, user_input, token, command, args):
         self.user_input = user_input
@@ -19,15 +19,15 @@ class Command:
             print(" help        - Show this help message")
             print(" cd          - Change directory")
             print(" pwd         - Current working directory")
-            print(" echo        - Print text to screen")
-            print(" ls | dir    - Displays a list of contents in the current active directory")
-            print(" mkdir       - Create new directories")
-            print(" rmdir       - Delete an empty directories")
-            print(" cp | copy   - Copy files from one directory to another")
-            print(" mv | move   - Move or rename files")
             print(" exit        - Exit the shell")
         elif self.args == ["--external"]:
             print("External commands:")
+            print(" ls | dir        - Displays a list of contents in the current active directory")
+            print(" mkdir           - Create new directories")
+            print(" rmdir           - Delete an empty directories")
+            print(" cp | copy       - Copy files from one directory to another")
+            print(" mv | move       - Move or rename files")
+            print(" echo            - Print text to screen")
             print(" touch           - Create a file")
             print(" rm | del        - Remove file")
             print(" clear | cls     - Clear visible screen in shell")
@@ -52,30 +52,23 @@ class Command:
             return
         print(os.getcwd())
 
-    def print_text(self):
-        if self.args == ["$PWD"]:
-            print(os.getcwd())
-        elif self.args:
-            print(*self.args)
-            return
+    def debug_mode(self):
+        if self.args == ["--enable"]:
+            config.DEBUG = True
+            print(f"[SYSTEM] : entering debug mode...")
+           
+        elif self.args == ["--disable"]:
+            config.DEBUG = False
+            print(f"[SYSTEM] : leaving debug mode...")
+        
+        else:
+            print("debug: add --enable or --disable")
     
     def check_ver(self):
         if self.args == ["--version"] or self.args == ["--v"]:
-            print(f"Pyscli 0.5.0 created by Ade Azhar, Adri Lorenzo, Dhimas Eka, Nugraha Bagya")
+            print(f"Pyscli 0.6.0 created by Ade Azhar, Adri Lorenzo, Dhimas Eka, Nugraha Bagya")
         else:
-            print("pyscli: use --version or --v to check shell version")
-    
-    def debug_mode(self):
-        if self.args == ["--enable"]:
-            print(f"[SYSTEM] : entering debug mode...")
-            Command.debug = True
-           
-        elif self.args == ["--disable"]:
-            print(f"[SYSTEM] : leaving debug mode...")
-            Command.debug = False
-        
-        else:
-            print("debug: please use --enable or --disable")
+            print("pyscli: add --version or --v to check shell version")
 
     def exit_shell():
         print("さようなら...")
@@ -89,8 +82,6 @@ class Command:
                 Command.change_directory(self)
             case "pwd":
                 Command.current_directory(self)
-            case "echo":
-                Command.print_text(self)
             case "debug":
                 Command.debug_mode(self)
             case "pyscli":

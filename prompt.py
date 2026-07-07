@@ -2,6 +2,7 @@ import os
 import getpass
 import socket
 import shlex
+import config
 from commands import Command
 from executor import Executor
 
@@ -104,10 +105,12 @@ def parse_and_execute(user_input):
     command = token[0].lower()
     args = token[1:]
 
+    if config.DEBUG == True:
+        print(f"\n======== [ Parser ] ========")
+        print(f"Token   : {token}")
+        print(f"Command : {command}")
+        print(f"Args    : {args}")
+        print(f"------------------------------")
+
     cmd = Command(user_input, token, command, args)
     cmd.execute_commands()
-
-    if Command.debug == True:
-        print(f"Token: {token}")
-        print(f"Command: {command}")
-        print(f"Args: {args}")    
