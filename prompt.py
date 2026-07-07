@@ -106,4 +106,8 @@ def parse_and_execute(user_input):
 
     cmd = Command(user_input, token, command, args)
     cmd.execute_commands()
-    
+
+    if Command.debug == True:
+        print(f"Token: {token}")
+        print(f"Command: {command}")
+        print(f"Args: {args}")    

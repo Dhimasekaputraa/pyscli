@@ -91,6 +91,8 @@ class Command:
                 Command.current_directory(self)
             case "echo":
                 Command.print_text(self)
+            case "debug":
+                Command.debug_mode(self)
             case "pyscli":
                 Command.check_ver(self)
             case "exit":
