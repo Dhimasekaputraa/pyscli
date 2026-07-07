@@ -20,6 +20,7 @@ class Command:
             print(" cd          - Change directory")
             print(" pwd         - Current working directory")
             print(" exit        - Exit the shell")
+            print("To view external commands use : help --external")
         elif self.args == ["--external"]:
             print("External commands:")
             print(" ls | dir        - Displays a list of contents in the current active directory")
@@ -54,21 +55,27 @@ class Command:
 
     def debug_mode(self):
         if self.args == ["--enable"]:
-            config.DEBUG = True
-            print(f"[SYSTEM] : entering debug mode...")
+            if config.DEBUG == True:
+                print(f"{config.YELLOW}debug: already in debug mode")
+            else:
+                config.DEBUG = True
+                print(f"debug: entering debug mode...")
            
         elif self.args == ["--disable"]:
-            config.DEBUG = False
-            print(f"[SYSTEM] : leaving debug mode...")
+            if config.DEBUG == False:
+                print(f"{config.YELLOW}debug: debug mode already disabled")
+            else:
+                config.DEBUG = False
+                print(f"debug: leaving debug mode...")
         
         else:
-            print(f"{config.RED}debug: add --enable or --disable")
+            print(f"{config.RED}debug: add --enable or --disable flag")
     
     def check_ver(self):
         if self.args == ["--version"] or self.args == ["--v"]:
-            print(f"{config.SHELLNAME} {config.VERSION} created by Ade Azhar, Adri Lorenzo, Dhimas Eka, Nugraha Bagya")
+            print(f"{config.SHELLNAME} {config.GREEN}{config.VERSION}{config.RESET} created by {config.BLUE}Ade Azhar, Adri Lorenzo, Dhimas Eka, Nugraha Bagya")
         else:
-            print(f"{config.RED}pyscli: add --version or --v to check shell version")
+            print(f"{config.RED}pyscli: add --version or --v flag to check shell version")
 
     def exit_shell():
         print("さようなら...")
