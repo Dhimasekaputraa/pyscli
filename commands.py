@@ -36,7 +36,7 @@ class Command:
             print(" grep | findstr  - Search specific text pattern")
             print(" sort            - Sort a string to ascending")
         else:
-            print("help: only write help or help --external")
+            print(f"{config.RED}help: only use help or help --external")
 
     def change_directory(self):
         target = self.args[0] if self.args else os.path.expanduser("~")
@@ -69,13 +69,14 @@ class Command:
                 print(f"debug: leaving debug mode...")
         
         else:
-            print(f"{config.RED}debug: add --enable or --disable flag")
+            print(f"{config.RED}debug: use --enable or --disable flag")
     
     def check_ver(self):
         if self.args == ["--version"] or self.args == ["--v"]:
-            print(f"{config.SHELLNAME} {config.GREEN}{config.VERSION}{config.RESET} created by {config.BLUE}Ade Azhar, Adri Lorenzo, Dhimas Eka, Nugraha Bagya")
+            print(f"{config.SHELLNAME} {config.GREEN}{config.VERSION}{config.RESET} " 
+                  f"created by {config.BLUE}Ade Azhar, Adri Lorenzo, Dhimas Eka, Nugraha Bagya")
         else:
-            print(f"{config.RED}pyscli: add --version or --v flag to check shell version")
+            print(f"{config.RED}pyscli: use --version or --v flag to check shell version")
 
     def exit_shell():
         print("さようなら...")
