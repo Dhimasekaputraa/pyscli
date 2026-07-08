@@ -62,19 +62,33 @@ def parse_and_execute(user_input):
             t = token[i]
 
             if t == "|":
+                if not current:
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '|'")
                 commands.append((current[0].lower(), current[1:]))
                 current = []
 
             elif t == "<":
+                if i + 1 >= len(token):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '\\n'")
+                if token [i+1] in ("|", "<", ">", ">>"):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '{token[i+1]}'")
                 stdin = token[i + 1]
                 i += 1
             
             elif t == ">":
+                if i + 1 >= len(token):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '\\n'")
+                if token [i+1] in ("|", "<", ">", ">>"):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '{token[i+1]}'")
                 stdout = token[i + 1]
                 append = False
                 i += 1
             
             elif t == ">>":
+                if i + 1 >= len(token):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '\\n'")
+                if token [i+1] in ("|", "<", ">", ">>"):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '{token[i+1]}'")
                 stdout = token[i + 1]
                 append = True
                 i += 1
@@ -86,6 +100,9 @@ def parse_and_execute(user_input):
 
         if current:
             commands.append((current[0].lower(), current[1:]))
+        
+        if not commands:
+            raise ValueError("Syntax error: missing command")
         
         if len(commands) > 1:
             Executor.execute_pipeline(commands, stdin=stdin, stdout=stdout, append=append)
