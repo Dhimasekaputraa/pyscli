@@ -13,7 +13,7 @@ class Command:
 
     def show_commands(self):
         if len(self.args) > 1:
-            print("help: too many arguments")
+            print(f"{config.RED}help: too many arguments")
         if not self.args:
             print("Available commands:")
             print(" help        - Show this help message")
