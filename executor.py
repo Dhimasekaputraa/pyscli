@@ -25,6 +25,12 @@ class Executor:
             print(f"{config.RED}fork failed: {e}")
             return
         
+        if config.DEBUG and pid != 0:
+            print("\n=== [ PID Information ] ===")
+            print(f"Parent PID : {os.getpid()}")
+            print(f"Child PID  : {pid}")
+            print("---------------------------\n")
+        
         if pid == 0:
             try:
                 os.execvp(
@@ -41,11 +47,6 @@ class Executor:
 
     @staticmethod
     def execute_external(command, args):
-        if config.DEBUG == True:
-            print("\n=== [ External Command ] ===")
-            print(f"Command  : {command}")
-            print(f"Args     : {args}")
-            print("----------------------------\n")
 
         if os.name == "nt":
             Executor._execute_windows(
@@ -94,6 +95,13 @@ class Executor:
         else:
             try:
                 pid = os.fork()
+
+                if config.DEBUG and pid != 0:
+                    print("=== [ PID Information ] ===")
+                    print(f"Parent PID : {os.getpid()}")
+                    print(f"Child PID  : {pid}")
+                    print("---------------------------\n")
+
                 if pid == 0:
 
                     if stdin:
@@ -127,8 +135,10 @@ class Executor:
         if config.DEBUG == True:
             print("\n=== [ PIPELINE ] ===")
             for i, (cmd, args) in enumerate(commands, start=1):
-                print(f"[{i}] Cmd\t: {cmd}")
-                print(f"    Args: {args}")
+                print(f"[{i}]")
+                print(f"Cmd\t: {cmd}")
+                print(f"Args\t: {args}")
+                print("---------------------")
             print(f"Stdin\t: {stdin}")
             print(f"Stdout\t: {stdout}")
             print(f"Append\t: {append}")
@@ -151,6 +161,14 @@ class Executor:
             for i in range(num_commands):
                 command, args = commands[i]
                 pid = os.fork()
+
+                if config.DEBUG and pid != 0:
+                    print(f"[{i+1}]")
+                    print(f"Command    : {command}")
+                    print(f"Parent PID : {os.getpid()}")
+                    print(f"Child PID  : {pid}")
+                    print("---------------------------")
+
                 if pid == 0:
                     if i == 0 and stdin:
                         fd = os.open(stdin, os.O_RDONLY)
