@@ -82,7 +82,7 @@ class Executor:
                         shell=True)
             
           except Exception as e:
-              print(e)
+              print(f"{config.RED}{e}")
         
           finally:
             if stdin_file:
@@ -172,7 +172,7 @@ class Executor:
                     try:
                         os.execvp(command, [command] + args)
                     except Exception as e:
-                        print(f"{config.RED}e")
+                        print(f"{config.RED}{e}")
                         os._exit(1)
         
                 else:
