@@ -120,10 +120,11 @@ def parse_and_execute(user_input):
 
     if config.DEBUG == True:
         print(f"\n======== [ Parser ] ========")
+        print(f"Input   : {user_input}")
         print(f"Token   : {token}")
         print(f"Command : {command}")
         print(f"Args    : {args}")
         print(f"------------------------------")
 
     cmd = Command(user_input, token, command, args)
-    cmd.execute_commands()
+    cmd.execute_commands()  
