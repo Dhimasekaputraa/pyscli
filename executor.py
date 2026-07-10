@@ -63,9 +63,9 @@ class Executor:
             print("\n=== [ Redirection ] ===")
             print(f"Command  : {command}")
             print(f"Args     : {args}")
-            print(f"Stdin    : {stdin}")
-            print(f"Stdout   : {stdout}")
-            print(f"Append   : {append}")
+            print(f"Stdin\t: {stdin}")
+            print(f"Stdout\t: {stdout}")
+            print(f"Append\t: {append}")
             print("-----------------------\n")
         if os.name == "nt":
           stdin_file = None
@@ -106,7 +106,13 @@ class Executor:
 
                     if stdin:
                         fd = os.open(stdin, os.O_RDONLY)
-                        os.dup2(fd, 0) 
+                        os.dup2(fd, 0)
+                        if config.DEBUG:
+                            print("=== [ File Descriptor ] ===")
+                            print(f"Input File  : {stdin}")
+                            print(f"FD          : {fd}")
+                            print(f"Redirect    : {stdin} (FD {fd}) -> STDIN (FD 0)")
+                            print("---------------------------\n")
                         os.close(fd)
                     
                     if stdout:
@@ -116,6 +122,13 @@ class Executor:
                             flags = (os.O_WRONLY | os.O_CREAT | os.O_TRUNC)
                     
                         fd = os.open(stdout, flags, 0o644)
+                        if config.DEBUG:
+                            print("=== [ File Descriptor ] ===")
+                            print(f"Output File : {stdout}")
+                            print(f"Append      : {append}")
+                            print(f"FD          : {fd}")
+                            print(f"Redirect    : STDOUT (FD 1) -> {stdout} (FD {fd})")
+                            print("---------------------------\n")
                         os.dup2(fd, 1)
                         os.close(fd)
 
@@ -158,6 +171,11 @@ class Executor:
             pipes = [os.pipe() for _ in range(num_commands - 1)]
             pids = []
 
+            if config.DEBUG:
+                print("=== [PID Information] ===")
+                print(f"Parent PID : {os.getpid()}")
+                print("---------------------------")
+
             for i in range(num_commands):
                 command, args = commands[i]
                 pid = os.fork()
@@ -165,7 +183,6 @@ class Executor:
                 if config.DEBUG and pid != 0:
                     print(f"[{i+1}]")
                     print(f"Command    : {command}")
-                    print(f"Parent PID : {os.getpid()}")
                     print(f"Child PID  : {pid}")
                     print("---------------------------")
 
@@ -195,6 +212,14 @@ class Executor:
         
                 else:
                     pids.append(pid)
+            
+            if config.DEBUG:
+                print("\n=== [ Pipe Descriptor ] ===")
+                for pipe_no, (r, w) in enumerate(pipes, start=1):
+                    print(f"Pipe {pipe_no}")
+                    print(f"Read FD  : {r}")
+                    print(f"Write FD : {w}")
+                print("---------------------------") 
 
             for r, w in pipes:
                 os.close(r)
