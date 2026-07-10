@@ -59,14 +59,14 @@ class Command:
                 print(f"{config.YELLOW}debug: already in debug mode")
             else:
                 config.DEBUG = True
-                print(f"debug: entering debug mode...")
+                print(f"debug: debug mode enabled.")
            
         elif self.args == ["--disable"]:
             if config.DEBUG == False:
                 print(f"{config.YELLOW}debug: debug mode already disabled")
             else:
                 config.DEBUG = False
-                print(f"debug: leaving debug mode...")
+                print(f"debug: debug mode disabled.")
         
         else:
             print(f"{config.RED}debug: use --enable or --disable flag")
