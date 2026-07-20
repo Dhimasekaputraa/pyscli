@@ -2,6 +2,7 @@ import os
 import getpass
 import socket
 import shlex
+import config
 from commands import Command
 from executor import Executor
 
@@ -39,64 +40,91 @@ def get_prompt():
     user_info = get_user_info()
     cwd = format_path()
 
-    GREEN = "\033[32m"
-    BLUE = "\033[34m"
-    RESET = "\033[0m"
-
-    return f"{GREEN}{user_info['user']}{RESET} | {BLUE}{user_info['host']}{RESET} : {cwd}$ "
+    return f"\n{config.GREEN}{user_info['user']}{config.RESET} | {config.BLUE}{user_info['host']}{config.RESET} : {cwd}$ "
 
 def parse_and_execute(user_input):
-    PIPE = "|"
-    REDIRECTION_IN = "<"
-    REDIRECTION_OUT = ">"
-
-    if PIPE in user_input:
-        commands_list = [cmd.strip() for cmd in user_input.split("|")]
-        parsed_commands = []
-        for cmd_str in commands_list:
-            tokens = shlex.split(cmd_str)
-            if tokens:
-                parsed_commands.append((tokens[0], tokens[1:]))
-        
-        Executor.execute_pipeline(parsed_commands)
-        return
-
-    if REDIRECTION_IN in user_input:
-        cmd_part, file_part = user_input.split("<", 1)
-        tokens = shlex.split(cmd_part.strip())
-        file_tokens = shlex.split(file_part.strip())
-        
-        if not tokens or not file_tokens:
-            print("Syntax error: Invalid redirection syntax.")
-            return
-            
-        command = tokens[0].lower()
-        args = tokens[1:]
-        filename = file_tokens[0]
-        
-        Executor.execute_redirection_in(command, args, filename)
-        return
-
-    if REDIRECTION_OUT in user_input:
-        cmd_part, file_part = user_input.split(">", 1)
-        tokens = shlex.split(cmd_part.strip())
-        file_tokens = shlex.split(file_part.strip())
-        
-        if not tokens or not file_tokens:
-            print("Syntax error: Invalid redirection syntax.")
-            return
-            
-        command = tokens[0].lower()
-        args = tokens[1:]
-        filename = file_tokens[0]
-        
-        Executor.execute_redirection_out(command, args, filename)
-        return
-    
 
     token = shlex.split(user_input)
+    if not token:
+        return
+    
+    if any(op in token for op in ("|", "<", ">", ">>")):
+        commands = []
+        current = []
+
+        stdin = None
+        stdout = None
+        append = False
+
+        i = 0
+
+        while i < len(token):
+            t = token[i]
+
+            if t == "|":
+                if not current:
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '|'")
+                commands.append((current[0].lower(), current[1:]))
+                current = []
+
+            elif t == "<":
+                if i + 1 >= len(token):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '\\n'")
+                if token [i+1] in ("|", "<", ">", ">>"):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '{token[i+1]}'")
+                stdin = token[i + 1]
+                i += 1
+            
+            elif t == ">":
+                if i + 1 >= len(token):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '\\n'")
+                if token [i+1] in ("|", "<", ">", ">>"):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '{token[i+1]}'")
+                stdout = token[i + 1]
+                append = False
+                i += 1
+            
+            elif t == ">>":
+                if i + 1 >= len(token):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '\\n'")
+                if token [i+1] in ("|", "<", ">", ">>"):
+                    raise ValueError(f"{config.RED}Syntax error near unexpected token '{token[i+1]}'")
+                stdout = token[i + 1]
+                append = True
+                i += 1
+            
+            else:
+                current.append(t)
+
+            i += 1
+
+        if current:
+            commands.append((current[0].lower(), current[1:]))
+        
+        if not commands:
+            raise ValueError("Syntax error: missing command")
+        
+        if len(commands) > 1:
+            Executor.execute_pipeline(commands, stdin=stdin, stdout=stdout, append=append)
+        
+        else:
+            command, args = commands[0]
+            command = command.lower()
+
+            Executor.execute_redirection(command, args, stdin=stdin, stdout=stdout,append=append)
+
+        return
+
     command = token[0].lower()
     args = token[1:]
 
+    if config.DEBUG == True:
+        print(f"\n======== [ Parser ] ========")
+        print(f"Input   : {user_input}")
+        print(f"Token   : {token}")
+        print(f"Command : {command}")
+        print(f"Args    : {args}")
+        print(f"------------------------------")
+
     cmd = Command(user_input, token, command, args)
-    cmd.execute_commands()
+    cmd.execute_commands()  

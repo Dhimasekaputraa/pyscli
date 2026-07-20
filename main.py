@@ -1,5 +1,6 @@
+from commands import Command
 from prompt import get_prompt, parse_and_execute
-
+   
 def main():
     while True:
         try:
@@ -7,15 +8,16 @@ def main():
 
             if not user_input.strip():
                 continue
-            
+
             parse_and_execute(user_input)
-        
+            
         except ValueError as e:
             print(f"Syntax error: {e}")
 
-        except (KeyboardInterrupt, EOFError):
-            print("\nGunakan 'exit' untuk keluar.")
+        except KeyboardInterrupt:
             continue
+        except EOFError:
+            Command.exit_shell()
 
 if __name__ == "__main__":
     main()
