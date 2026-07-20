@@ -1,15 +1,14 @@
 # PysCLI
 
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![Version](https://img.shields.io/badge/Version-v0.6-orange.svg)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-success)
+![Status](https://img.shields.io/badge/Status-Stable-brightgreen)
+![Course](https://img.shields.io/badge/Course-Operating%20System-blueviolet)
+
 **PysCLI** (Python Simple Command Line Interface) is a lightweight Unix-like shell implemented in Python. The project was developed as an educational operating systems project to demonstrate how a command-line interpreter works internally, from reading user input to parsing commands and executing processes.
 
 PysCLI implements many of the core mechanisms of a shell, including a REPL, command parsing, built-in commands, external command execution, piping, input/output redirection, and debugging utilities.
-
-![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
-![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-success)
-![Version](https://img.shields.io/badge/Version-v0.6-orange.svg)
-![GitHub Repo stars](https://img.shields.io/github/stars/Dhimasekaputraa/PysCLI?style=social)
-![GitHub forks](https://img.shields.io/github/forks/Dhimasekaputraa/PysCLI?style=social)
-![GitHub last commit](https://img.shields.io/github/last-commit/Dhimasekaputraa/PysCLI)
 
 ---
 
