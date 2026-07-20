@@ -92,7 +92,7 @@ Python **3.10** or newer is recommended.
 Clone the repository:
 
 ```bash
-git clone https://github.com/Dhimasekaputraa/Pyscli.git
+git clone https://github.com/Dhimasekaputraa/pyscli.git
 ```
 
 Move into the project directory:
